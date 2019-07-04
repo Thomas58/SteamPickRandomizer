@@ -1,0 +1,108 @@
+﻿<Window x:Class="RandomizedSteamPick.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RandomizedSteamPick"
+        xmlns:vm="clr-namespace:RandomizedSteamPick.ViewModel"
+        xmlns:tools="clr-namespace:RandomizedSteamPick.Tools"
+        xmlns:shape="clr-namespace:RandomizedSteamPick.Canvas_Drawings.Custom_Shapes"
+        mc:Ignorable="d"
+        Title="Roll A Game" Height="450" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="75"/>
+        </Grid.RowDefinitions>
+        
+        <Canvas x:Name="DrawingCanvas" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1">
+            <Border Width="{Binding ElementName=DrawingCanvas, Path=ActualWidth}" Height="{Binding ElementName=DrawingCanvas, Path=ActualHeight}" Panel.ZIndex="1"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" x:Name="MainImage" MaxWidth="368" MaxHeight="138" MinWidth="184" MinHeight="69" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                    <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="100" Padding="0,10,0,0">
+                        <TextBlock x:Name="MainText" Text="Get a random game!" FontSize="20" FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center" />
+                    </Label>
+                </Grid>
+            </Border>
+        </Canvas>
+
+        <Ellipse Grid.Row="0" Grid.RowSpan="2" Fill="{Binding Avatar}" Height="75" Width="75" Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,30">
+            <Button Content="Roll A Name" Width="85" Command="{Binding RollCommand}" CommandParameter="{Binding ElementName=Combobox, Path=SelectedIndex}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="OverridesDefaultStyle" Value="true"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border 
+                                        x:Name="Border"  
+                                        CornerRadius="2" 
+                                        BorderThickness="1"
+                                        Background="White"
+                                        BorderBrush="Black">
+                                        <ContentPresenter 
+                                            Margin="2"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            RecognizesAccessKey="True"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsKeyboardFocused" Value="true">
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                        </Trigger>
+                                        <Trigger Property="IsDefaulted" Value="true">
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="Border" Property="Background" Value="Gray" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="true">
+                                            <Setter TargetName="Border" Property="Background" Value="Red" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="IndianRed" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="false">
+                                            <Setter TargetName="Border" Property="Background" Value="Gray" />
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Viewbox>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Show List" Width="75" Command="{Binding ShowListCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="10,0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ComboBox x:Name="Combobox2" Grid.Row="0" MinWidth="70" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectedIndex="{Binding GameTypeIndex}">
+                <ComboBoxItem IsSelected="True">All types</ComboBoxItem>
+                <ComboBoxItem>Local Multiplayer</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="Combobox" Grid.Row="1" MinWidth="70" HorizontalAlignment="Right" VerticalAlignment="Bottom" SelectedIndex="{Binding TimePlayedIndex}">
+                <ComboBoxItem IsSelected="True">All time played</ComboBoxItem>
+                <ComboBoxItem>Not recently played</ComboBoxItem>
+                <ComboBoxItem>Never played</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+
+    </Grid>
+</Window>
